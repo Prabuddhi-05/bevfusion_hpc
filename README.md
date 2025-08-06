@@ -115,13 +115,6 @@ done
 sinfo -p gpu -o "%N %G"
 ```
 
-**Example Output:**
-```
-NODELIST GRES
-hpc-novel-gpu[01,04] gpu:nvidia_rtx_a6000:8(S:0-1)
-hpc-novel-gpu[02-03] gpu:nvidia_rtx_a6000:4(S:0)
-```
-
 ### Monitor Training Logs Live
 ```bash
 tail -f logs/bevfusion_train_<jobID>.out
