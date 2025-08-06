@@ -50,7 +50,7 @@ Use the following scripts with scp commands:
 ssh pwariyapperuma@login.novel.hpc.network.uni "rm -rvf ~/bevfusion_final/data/nuscenes/sweeps/CAM_FRONT_RIGHT"
 ```
 
-### 4. Watch live file counts in folder
+### 4. Watch live file counts in a folder
 ```bash
 watch -n 10 'ssh pwariyapperuma@login.novel.hpc.network.uni "find /home/users/pwariyapperuma/bevfusion_final/data/nuscenes/sweeps/LIDAR_TOP -type f | wc -l"'
 ```
