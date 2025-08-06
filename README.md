@@ -1,7 +1,7 @@
 
-# Novel HPC - BEVFusion Training Workflow
+# Novel HPC Cluster - for BEVFusion Training 
 
-This README summarizes the steps followed for running BEVFusion training on the Novel HPC cluster, including VPN access, data transfer, Docker & Enroot setup, and GPU monitoring.
+This summarizes the steps followed for running BEVFusion training on the Novel HPC cluster, including VPN access, data transfer, Enroot setup, etc.
 
 ---
 
@@ -13,6 +13,7 @@ cd ~/Downloads
 chmod +x cisco-secure-client-linux64-5.1.10.233-core-vpn-webdeploy-k9.sh
 sudo ./cisco-secure-client-linux64-5.1.10.233-core-vpn-webdeploy-k9.sh
 ```
+
 
 ### 2. Launch VPN
 ```bash
