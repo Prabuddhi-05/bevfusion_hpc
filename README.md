@@ -22,7 +22,7 @@ sudo ./cisco-secure-client-linux64-5.1.10.233-core-vpn-webdeploy-k9.sh
 
 ---
 
-## Connect to HPC Cluster
+### 3.Connect to HPC Cluster
 
 ```bash
 ssh -CX pwariyapperuma@login.novel.hpc.network.uni
