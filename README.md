@@ -59,6 +59,8 @@ watch -n 10 'ssh pwariyapperuma@login.novel.hpc.network.uni "find /home/users/pw
 
 ## Enroot & Docker Setup (Local Machine)
 
+Enroot is a lightweight, rootless container runtime by NVIDIA designed for running GPU-accelerated workloads in HPC environments.
+
 ### 1. Install Enroot dependencies
 ```bash
 sudo apt update
