@@ -87,7 +87,7 @@ scp ~/bevfusion_final.sqfs pwariyapperuma@login.novel.hpc.network.uni:/home/user
 
 ---
 
-## 📊 Count Files (Inside Cluster)
+## Count Files (Inside Cluster)
 
 ```bash
 echo "Counting files in 'samples'..."
