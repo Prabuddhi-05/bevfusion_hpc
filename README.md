@@ -41,7 +41,7 @@ sshfs pwariyapperuma@login.novel.hpc.network.uni:/home/users/pwariyapperuma ~/cl
 ```
 
 ### 2. Copy nuScenes data
-Use the following scripts:
+Use the following scripts with scp commands:
 - `copy_nuscenes_partial.sh`
 - `copy_nuscenes_samples.sh`
 
@@ -50,7 +50,7 @@ Use the following scripts:
 ssh pwariyapperuma@login.novel.hpc.network.uni "rm -rvf ~/bevfusion_final/data/nuscenes/sweeps/CAM_FRONT_RIGHT"
 ```
 
-### 4. Watch file counts in LIDAR folder
+### 4. Watch live file counts in folder
 ```bash
 watch -n 10 'ssh pwariyapperuma@login.novel.hpc.network.uni "find /home/users/pwariyapperuma/bevfusion_final/data/nuscenes/sweeps/LIDAR_TOP -type f | wc -l"'
 ```
