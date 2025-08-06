@@ -41,7 +41,7 @@ sshfs pwariyapperuma@login.novel.hpc.network.uni:/home/users/pwariyapperuma ~/cl
 ```
 
 ### 2. Copy nuScenes data
-Use the following scripts with ``scp ``commands:
+Use the following scripts with ``scp commands:
 - `copy_nuscenes_partial.sh`
 - `copy_nuscenes_samples.sh`
 
