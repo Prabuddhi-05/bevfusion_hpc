@@ -1,0 +1,85 @@
+model:
+  encoders:
+    camera:
+      neck:
+        type: GeneralizedLSSFPN
+        in_channels: [512, 1024, 2048]
+        out_channels: 256
+        start_level: 0
+        num_outs: 3
+        norm_cfg:
+          type: BN2d
+          requires_grad: true
+        act_cfg:
+          type: ReLU
+          inplace: true
+        upsample_cfg:
+          mode: bilinear
+          align_corners: false
+      vtransform:
+        type: AwareBEVDepth # Changed
+        in_channels: 256
+        out_channels: 80
+        image_size: ${image_size}
+        feature_size: ${[image_size[0] // 8, image_size[1] // 8]} 
+        xbound: [-51.2, 51.2, 0.4] # Original
+        #xbound: [-25.6, 25.6, 0.8]
+        ybound: [-51.2, 51.2, 0.4] # Original
+        #ybound: [-25.6, 25.6, 0.8]
+        zbound: [-10.0, 10.0, 20.0]
+        dbound: [1.0, 60.0, 0.5]
+        downsample: 1 
+        bevdepth_downsample: 8 # Changed (This is a required change)
+        bevdepth_refine: True # Added (This is a required change)
+        depth_loss_factor: 3.0 # Added (This is a required change)
+    lidar:
+      voxelize:
+        max_num_points: 10
+        point_cloud_range: ${point_cloud_range}
+        voxel_size: ${voxel_size}
+        max_voxels: [90000, 120000]
+        #max_voxels: [60000, 80000] # Changed
+      backbone:
+        type: SparseEncoder
+        in_channels: 5
+        sparse_shape: [1024, 1024, 41]
+        output_channels: 128
+        order:
+          - conv
+          - norm
+          - act
+        encoder_channels:
+          - [16, 16, 32]
+          - [32, 32, 64]
+          - [64, 64, 128]
+          - [128, 128]
+        encoder_paddings:
+          - [0, 0, 1]
+          - [0, 0, 1]
+          - [0, 0, [1, 1, 0]]
+          - [0, 0]
+        block_type: basicblock
+
+lr_config: null
+
+optimizer:
+  lr: 2.0e-4
+  
+log_config: # Added for batch size
+  interval: 1   # Logs every iteration, not just on optimizer step
+  hooks:
+    - type: TextLoggerHook
+      by_epoch: False
+  
+optimizer_config:    # Added for batch size
+  cumulative_iters: 4  # 32
+  grad_clip:  
+    max_norm: 35  
+    norm_type: 2 
+
+max_epochs: 6
+
+# Add fp16 
+#fp16:
+  #loss_scale: 256.0 # Newly added
+
