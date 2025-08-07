@@ -53,7 +53,18 @@ ssh pwariyapperuma@login.novel.hpc.network.uni "rm -rvf ~/bevfusion_final/data/n
 ### 4. Watch live file counts in a folder
 ```bash
 watch -n 10 'ssh pwariyapperuma@login.novel.hpc.network.uni "find /home/users/pwariyapperuma/bevfusion_final/data/nuscenes/sweeps/LIDAR_TOP -type f | wc -l"'
+
 ```
+
+### rsync command (example)
+```bash
+rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+--progress "/media/prabuddhi/Crucial X92/bevfusion-main/data/nuscenes/test" \
+pwariyapperuma@login.novel.hpc.network.uni:/home/users/pwariyapperuma/bevfusion_final/data/nuscenes/
+
+```
+
+https://www.digitalocean.com/community/tutorials/how-to-copy-files-with-rsync-over-ssh
 
 ---
 
