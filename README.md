@@ -66,6 +66,8 @@ pwariyapperuma@login.novel.hpc.network.uni:/home/users/pwariyapperuma/bevfusion_
 
 https://www.digitalocean.com/community/tutorials/how-to-copy-files-with-rsync-over-ssh
 
+Good for large datasets, resumes on failure, copy only the differences (not all files always)
+
 ---
 
 ## Enroot & Docker Setup (Local Machine)
