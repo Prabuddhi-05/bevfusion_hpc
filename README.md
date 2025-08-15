@@ -156,6 +156,10 @@ This means the container was **corrupted or partially extracted**, usually due t
 - Auto-cleaning of Enroot folders
 
 ### Solution
+To resolve this, the container must be cleanly re-extracted from the original .sqfs file.
+- Forced cleanup of old containers
+- Single-threaded extraction to prevent ulimit issues
+
 Re-create the container using the test script (`test.sh`) which includes,
 ```bash
 ENROOT_LOG_LEVEL=debug ENROOT_UNSQUASHFS_OPTIONS="-p 1" enroot create -n bevfusion_enroot /home/users/pwariyapperuma/bevfusion_final/docker/bevfusion_final.sqfs
@@ -166,4 +170,4 @@ ENROOT_LOG_LEVEL=debug ENROOT_UNSQUASHFS_OPTIONS="-p 1" enroot create -n bevfusi
 watch -n 10 'du -sh ~/.local/share/enroot/bevfusion_enroot && find ~/.local/share/enroot/bevfusion_enroot | wc -l'
 ```
 
-This will show real-time updates on size and file count during container creation.
+This will show real-time updates on size and file count during container creation. (Time taken = ..... hours)
