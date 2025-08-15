@@ -127,7 +127,11 @@ done
 
 ### Check GPU availability
 ```bash
-sinfo -p gpu -o "%N %G"
+sinfo -p gpu -o "%N %G %T %D %C"
+```
+
+```bash
+squeue -p gpu -o "%.18i %.9P %.8u %.2t %.10M %.6D %R""
 ```
 
 ### Monitor Training Logs Live
