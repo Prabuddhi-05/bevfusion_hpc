@@ -28,7 +28,7 @@ echo "[INFO] GPUs requested by SLURM: ${SLURM_GPUS:-N/A}"
 echo "[INFO] Enroot path: $(command -v enroot || echo 'NOT FOUND')"
 enroot version || echo "[WARN] Could not print Enroot version (older Enroot often behaves like this)."
 
-# ✅ FIX HERE: Only request compute + utility capabilities
+# FIX HERE: Only request compute + utility capabilities
 export NVIDIA_VISIBLE_DEVICES=all
 export NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
@@ -88,18 +88,12 @@ enroot start \
     echo "[IN-CTR] Downloading pretrained weights..."
     chmod +x ./tools/download_pretrained.sh
     ./tools/download_pretrained.sh
-    
-    #echo "[IN-CTR] Pre-downloading Swin Tiny checkpoint manually..."
-    #mkdir -p /workspace/.cache/torch/hub/checkpoints/
-    #wget -nc -O /workspace/.cache/torch/hub/checkpoints/swin_tiny_patch4_window7_224.pth \
-    #https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth
-
-    echo "[IN-CTR] Starting 8-GPU evaluation..."
+   
+    echo "[IN-CTR] Starting 4-GPU evaluation..."
     echo "[IN-CTR] OMP_NUM_THREADS=${OMP_NUM_THREADS:-unset} NCCL_IB_DISABLE=${NCCL_IB_DISABLE:-unset} NCCL_P2P_LEVEL=${NCCL_P2P_LEVEL:-unset}"
     torchpack dist-run -np 4 python tools/test.py \
       configs/nuscenes/det/transfusion/secfpn/camera+lidar/swint_v0p075/convfuser.yaml \
-      pretrained/bevfusion-det.pth --eval bbox
+      runs/run-db93ec3e-b7e02d52/epoch_6.pth \
+      --eval bbox > runs/run-db93ec3e-b7e02d52/eval_epoch_6.txt 2>&1
   '
-
 echo "[INFO] Evaluation job finished."
-
