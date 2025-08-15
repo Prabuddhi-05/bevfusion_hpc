@@ -140,3 +140,30 @@ tail -f logs/bevfusion_train_<jobID>.out
 ```
 
 ---
+
+## Enroot Container Issue and Fix
+
+### Problem
+After training BEVFusion model successfully for weeks, an unexpected error occurred when launching the container.
+
+```
+enroot-switchroot: failed to execute: /bin/sh: No such file or directory
+```
+
+This means the container was **corrupted or partially extracted**, usually due to reasons such as
+- Interrupted extraction
+- Switching from 4 GPUs to 8 GPUs or different node
+- Auto-cleaning of Enroot folders
+
+### Solution
+Re-create the container using the test script (`test.sh`) which includes,
+```bash
+ENROOT_LOG_LEVEL=debug ENROOT_UNSQUASHFS_OPTIONS="-p 1" enroot create -n bevfusion_enroot /home/users/pwariyapperuma/bevfusion_final/docker/bevfusion_final.sqfs
+```
+
+### Monitor Progress
+```bash
+watch -n 10 'du -sh ~/.local/share/enroot/bevfusion_enroot && find ~/.local/share/enroot/bevfusion_enroot | wc -l'
+```
+
+This will show real-time updates on size and file count during container creation.
