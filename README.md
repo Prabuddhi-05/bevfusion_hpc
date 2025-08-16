@@ -150,7 +150,7 @@ After training BEVFusion model successfully for weeks, an unexpected error occur
 enroot-switchroot: failed to execute: /bin/sh: No such file or directory
 ```
 
-This means the container was **corrupted or partially extracted**.
+This means the container was corrupted or partially extracted.
 
 ### Solution
 To resolve this, the container was cleanly re-extracted (`test.sh`) from the original .sqfs file.
@@ -196,11 +196,11 @@ NCCL version 2.10.3+cuda11.3
 
 #### Cause
 
-* NCCL multi-GPU communication failed due to **missing or misconfigured environment variables**.
+* NCCL multi-GPU communication failed due to missing or misconfigured environment variables.
 
 #### Solution
 
-Add the **NVIDIA and NCCL environment variables** in the SLURM script **before training starts**,
+Add the NVIDIA and NCCL environment variables in the SLURM script before training starts.
 
 ```bash
 # NVIDIA Runtime Fixes
@@ -216,7 +216,7 @@ export NCCL_IB_DISABLE=1
 export OMP_NUM_THREADS=4
 ```
 
-Also, add a fallback **inside the container** in case `CUDA_VISIBLE_DEVICES` is not set:
+Also, add a fallback inside the container in case `CUDA_VISIBLE_DEVICES` is not set:
 
 ```bash
 if [[ -z "${CUDA_VISIBLE_DEVICES:-}" ]]; then
