@@ -186,7 +186,7 @@ GPU driver configuration problem
 
 ---
 
-### Problem -3 (On other Nodes: `hpc-novel-gpu02–04`)
+### Problem - 3 (On other Nodes: `hpc-novel-gpu02–04`)
 
 When training was run on other nodes after container creation, the following message would appear and the job would hang indefinitely.
 
