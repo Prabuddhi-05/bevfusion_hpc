@@ -141,7 +141,7 @@ tail -f logs/bevfusion_train_<jobID>.out
 
 ---
 
-## Enroot Container Issue and Fix
+## Enroot Container Issues and Fixes
 
 ### Problem - 1
 After training BEVFusion model successfully for weeks, an unexpected error occurred when launching the container.
