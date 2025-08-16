@@ -143,31 +143,84 @@ tail -f logs/bevfusion_train_<jobID>.out
 
 ## Enroot Container Issue and Fix
 
-### Problem
+### Problem - 1
 After training BEVFusion model successfully for weeks, an unexpected error occurred when launching the container.
 
 ```
 enroot-switchroot: failed to execute: /bin/sh: No such file or directory
 ```
 
-This means the container was **corrupted or partially extracted**, usually due to reasons such as
-- Interrupted extraction
-- Switching from 4 GPUs to 8 GPUs or different node
-- Auto-cleaning of Enroot folders
+This means the container was **corrupted or partially extracted**.
 
 ### Solution
-To resolve this, the container must be cleanly re-extracted from the original .sqfs file.
+To resolve this, the container was cleanly re-extracted (`test.sh`) from the original .sqfs file.
 - Forced cleanup of old containers
-- Single-threaded extraction to prevent ulimit issues
-
-Re-create the container using the test script (`test.sh`) which includes,
-```bash
-ENROOT_LOG_LEVEL=debug ENROOT_UNSQUASHFS_OPTIONS="-p 1" enroot create -n bevfusion_enroot /home/users/pwariyapperuma/bevfusion_final/docker/bevfusion_final.sqfs
-```
+- Re-extract the container with using multiple threads
 
 ### Monitor Progress
 ```bash
 watch -n 10 'du -sh ~/.local/share/enroot/bevfusion_enroot && find ~/.local/share/enroot/bevfusion_enroot | wc -l'
 ```
+This shows real-time updates on size and file count during container creation. (Time taken = around 24 hours)
 
-This will show real-time updates on size and file count during container creation. (Time taken = ..... hours)
+### Problem - 2 (on Node 1: `hpc-novel-gpu01`)
+
+During training on Node 1, the following error repeatedly occurred.
+
+```bash
+nvidia-container-cli: ldcache error: process /usr/sbin/ldconfig terminated with signal 9
+[ERROR] /etc/enroot/hooks.d/98-nvidia.sh exited with return code 1
+srun: error: hpc-novel-gpu01: task 0: Exited with exit code 1
+```
+
+#### Cause
+GPU driver configuration problem
+
+#### Solution
+
+* **Permanently exclude Node 1 from training jobs** using the SLURM directive.
+
+```bash
+#SBATCH --exclude=hpc-novel-gpu01
+```
+
+---
+
+### ⚠️ Problem -3 (On other Nodes: `hpc-novel-gpu02–04`)
+
+When training was run on other nodes after container creation, the following message would appear and the job would hang indefinitely.
+
+```bash
+NCCL version 2.10.3+cuda11.3
+```
+
+#### Cause
+
+* NCCL multi-GPU communication failed due to **missing or misconfigured environment variables**.
+
+#### Solution
+
+Add the **NVIDIA and NCCL environment variables** in the SLURM script **before training starts**:
+
+```bash
+# NVIDIA Runtime Fixes
+export NVIDIA_VISIBLE_DEVICES=all
+export NVIDIA_DRIVER_CAPABILITIES=compute,utility
+export NVIDIA_DISABLE_REQUIRE=1
+export NVIDIA_DISABLE_LDCONFIG=1
+
+# NCCL + CUDA Communication Flags
+export NCCL_ASYNC_ERROR_HANDLING=1
+export NCCL_P2P_LEVEL=NVL
+export NCCL_IB_DISABLE=1
+export OMP_NUM_THREADS=4
+```
+
+Also, add a fallback **inside the container** in case `CUDA_VISIBLE_DEVICES` is not set:
+
+```bash
+if [[ -z "${CUDA_VISIBLE_DEVICES:-}" ]]; then
+    export CUDA_VISIBLE_DEVICES=0,1,2,3
+    echo "[IN-CTR] CUDA_VISIBLE_DEVICES was unset; defaulting to $CUDA_VISIBLE_DEVICES"
+fi
+```
