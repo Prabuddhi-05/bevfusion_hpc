@@ -200,7 +200,7 @@ NCCL version 2.10.3+cuda11.3
 
 #### Solution
 
-Add the **NVIDIA and NCCL environment variables** in the SLURM script **before training starts**:
+Add the **NVIDIA and NCCL environment variables** in the SLURM script **before training starts**,
 
 ```bash
 # NVIDIA Runtime Fixes
