@@ -226,7 +226,7 @@ fi
 ```
 ---
 
-###  Problem 4 (Container works only on one node (Node-dependent Enroot setup)
+###  Problem - 4 (Container works only on one node (Node-dependent Enroot setup)
 
 After successfully running training on a specific node (e.g., `hpc-novel-gpu04`), submitting the same job on other nodes (e.g., `gpu01` or `gpu03`), the container was stuck in the creation stage for many hours (2+ days).
 
