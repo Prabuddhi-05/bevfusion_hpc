@@ -246,7 +246,7 @@ This makes the container:
 - Start instantly (no pre-extraction required)  
 - Easier to maintain and reproduce
 
-###  Example SLURM Snippet (Pyxis)
+###  Example SLURM Snippet (Pyxis) - refer `bevfusion_train_pyxis.sh`
 
 ```bash
 srun --ntasks=1 --gpus=4 --gpu-bind=closest --mpi=none \
