@@ -225,16 +225,16 @@ if [[ -z "${CUDA_VISIBLE_DEVICES:-}" ]]; then
 fi
 ```
 
-# Problem 4 (Container works only on one node (Node-dependent Enroot setup)
+###  Problem 4 (Container works only on one node (Node-dependent Enroot setup)
 
 After successfully running training on a specific node (e.g., `hpc-novel-gpu04`), submitting the same job on other nodes (e.g., `gpu01` or `gpu03`), the container was stuck in the creation stage for many hours (2+ days).
 
-## Cause
+###  Cause
 This happened because the container was created as a **named Enroot container**, which is **stored locally on a single compute node**.  
 When the job was scheduled on a different node, the system tried to **re-extract the entire container** from the `.sqfs` file.  
 This process can take many hours/days.
 
-## Solution
+###  Solution
 The workflow was updated to use **Pyxis** instead of a named Enroot container.
 
 - **Old:** Pre-extracted named Enroot container tied to one node.  
@@ -245,7 +245,7 @@ This makes the container:
 - Start instantly (no pre-extraction required)  
 - Easier to maintain and reproduce
 
-### Example SLURM Snippet (Pyxis)
+###  Example SLURM Snippet (Pyxis)
 
 ```bash
 srun --ntasks=1 --gpus=4 --gpu-bind=closest --mpi=none \
