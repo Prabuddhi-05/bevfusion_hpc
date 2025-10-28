@@ -231,12 +231,12 @@ fi
 After successfully running training on a specific node (e.g., `hpc-novel-gpu04`), submitting the same job on other nodes (e.g., `gpu01` or `gpu03`), the container was stuck in the creation stage for many days (2+ days).
 
 ###  Cause
-This happened because the container was created as a **named Enroot container**, which is **stored locally on a single compute node**.  
-When the job was scheduled on a different node, the system tried to **re-extract the entire container** from the `.sqfs` file.  
+This happened because the container was created as a named Enroot container, which is stored locally on a single compute node.  
+When the job was scheduled on a different node, the system tried to re-extract the entire container from the `.sqfs` file.  
 This process can take many hours/days.
 
 ###  Solution
-The workflow was updated to use **Pyxis** instead of a named Enroot container.
+The workflow was updated to use Pyxis instead of a named Enroot container.
 
 - **Old:** Pre-extracted named Enroot container tied to one node.  
 - **New:** Directly mount the `.sqfs` container file at runtime using Pyxis (`--container-image`).
