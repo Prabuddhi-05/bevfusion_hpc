@@ -228,7 +228,7 @@ fi
 
 ###  Problem - 4 (Container works only on one node (Node-dependent Enroot setup)
 
-After successfully running training on a specific node (e.g., `hpc-novel-gpu04`), submitting the same job on other nodes (e.g., `gpu01` or `gpu03`), the container was stuck in the creation stage for many hours (2+ days).
+After successfully running training on a specific node (e.g., `hpc-novel-gpu04`), submitting the same job on other nodes (e.g., `gpu01` or `gpu03`), the container was stuck in the creation stage for many days (2+ days).
 
 ###  Cause
 This happened because the container was created as a **named Enroot container**, which is **stored locally on a single compute node**.  
