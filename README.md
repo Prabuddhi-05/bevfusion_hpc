@@ -224,6 +224,7 @@ if [[ -z "${CUDA_VISIBLE_DEVICES:-}" ]]; then
     echo "[IN-CTR] CUDA_VISIBLE_DEVICES was unset; defaulting to $CUDA_VISIBLE_DEVICES"
 fi
 ```
+---
 
 ###  Problem 4 (Container works only on one node (Node-dependent Enroot setup)
 
@@ -262,3 +263,5 @@ srun --ntasks=1 --gpus=4 --gpu-bind=closest --mpi=none \
 ```
 
 **Result:** Container launches immediately on any node — no extraction delays, no node-specific failures.
+
+---
