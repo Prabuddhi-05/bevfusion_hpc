@@ -308,9 +308,9 @@ A **config file** for visualization.
 ---
 
 ### 3. `bevfusion_viz.sh`
-A **SLURM batch script** to run visualization inside your Enroot container.
+A **SLURM batch script** to run visualization inside the Enroot container.
 
-#### What It Does
+#### What it does
 - Mounts pretrained weights to `/workspace`.
 - Ensures `tqdm` is installed.
 - Executes:
@@ -321,8 +321,7 @@ A **SLURM batch script** to run visualization inside your Enroot container.
 
 ---
 
-
-### Why `test.py` Failed for Visualization
+### Why `test.py` failed for visualization
 Initially, visualization was attempted via:
 ```bash
 torchpack dist-run -np 4 python tools/test.py --show --show-dir ...
