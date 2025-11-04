@@ -297,7 +297,7 @@ A **single-GPU visualization script** that generates 3D boxes from BEVFusion out
 ---
 
 ### 2. `default.yaml`
-A **config file** for visualization consistency and local inference.
+A **config file** for visualization.
 
 #### Change
 - Local Swin-T checkpoint path:
