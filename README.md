@@ -266,21 +266,19 @@ srun --ntasks=1 --gpus=4 --gpu-bind=closest --mpi=none \
 
 ---
 
-# 🧭 BEVFusion Visualization Toolkit (Camera + LiDAR)
+# BEVFusion Visualization (Camera + LiDAR)
 
-This toolkit visualizes **3D object detections** from trained BEVFusion models on both **LiDAR BEV** and **camera images** — using a simplified, single-GPU setup designed for HPC environments.
+This visualizes **3D object detections** from trained BEVFusion models on both **LiDAR BEV** and **camera images**, using a simplified, single-GPU setup.
 
 ---
 
-## 📂 Files Overview
+## Files Overview
 
-### 1. `visualize_images.py`
+### 1. `visualize.py`
 A **single-GPU visualization script** that renders 3D boxes from BEVFusion outputs on LiDAR BEV and camera views.
 
-#### ✅ Features
-- Runs **without distributed mode (no DDP)** for stable visualization.
-- Fixes the `"DataContainer is not iterable"` error from the old test-based approach.
-- Adds `--no-map` (disables map/segmentation overlay).
+#### Features
+- Adds `--no-map` (disables segmentation overlay).
 - Supports two modes via `--mode`:
   - `"pred"` → draw model predictions.  
   - `"gt"` → draw ground-truth boxes for comparison.
@@ -294,45 +292,26 @@ A **single-GPU visualization script** that renders 3D boxes from BEVFusion outpu
     ├── camera-1/
     ...
   ```
-
-#### 🎨 Visualization Color Coding
-Each object class is drawn with a fixed color:
-| Class | Color |
-|:------|:------|
-| Car | 🟥 Red |
-| Truck | 🟧 Orange |
-| Bus | 🟨 Yellow |
-| Pedestrian | 🟩 Green |
-| Bicycle / Motorcycle | 🟦 Blue |
-| Traffic Cone / Barrier | 🟪 Purple |
-
-(Colors match the standard nuScenes palette for BEVFusion visualizations.)
-
+  - Each object class is drawn with a fixed color. 
 ---
 
-### 2. `default_viz.yaml`
-A **config file** tuned for visualization consistency and local inference.
+### 2. `default.yaml`
+A **config file** for visualization consistency and local inference.
 
-#### ✅ Key Settings
-- BEV range: `[-54, -54, -5, 54, 54, 3]`
-- Voxel size: `[0.075, 0.075, 0.2]`
-- Grid size: `[1440, 1440, 41]`
+#### Change
 - Local Swin-T checkpoint path:
   ```
   /workspace/pretrained/swin_tiny_patch4_window7_224.pth
   ```
   *(No internet download required.)*
-- Uses **CosineAnnealing** LR policy for smooth schedule compatibility.
-
 ---
 
 ### 3. `bevfusion_viz.sh`
 A **SLURM batch script** to run visualization inside your Enroot container.
 
-#### ✅ What It Does
-- Mounts project and pretrained weights to `/workspace`.
+#### What It Does
+- Mounts pretrained weights to `/workspace`.
 - Ensures `tqdm` is installed.
-- Verifies Swin checkpoint before running.
 - Executes:
   ```bash
   python tools/visualize_images.py       configs/.../default_viz.yaml       --mode pred       --checkpoint runs/run-xxxx/epoch_6.pth       --out-dir runs/run-xxxx/viz_results       --no-map --bbox-score 0.3
@@ -341,73 +320,20 @@ A **SLURM batch script** to run visualization inside your Enroot container.
 
 ---
 
-## 🧩 Evolution & Key Notes
 
-### 🧠 1. Why `test.py` Failed for Visualization
+### Why `test.py` Failed for Visualization
 Initially, visualization was attempted via:
 ```bash
 torchpack dist-run -np 4 python tools/test.py --show --show-dir ...
 ```
 However:
 - `multi_gpu_test()` in `test.py` **does not support `show` or `show-dir` arguments**.
-- It expects distributed outputs, not image-level rendering.
 - This led to:  
   ```
   TypeError: multi_gpu_test() got an unexpected keyword argument 'show'
   ```
-Hence, a **dedicated `visualize_images.py`** was developed to directly access the model, dataloader, and image tensors — bypassing DDP and enabling flexible drawing.
+Hence, the **dedicated `visualize.py`** was run directly.
 
 ---
-
-### 🎯 2. Visualization Modes (`--mode`)
-| Mode | Description |
-|:------|:-------------|
-| `"pred"` | Draws **predicted bounding boxes** from the checkpoint. |
-| `"gt"` | Draws **ground-truth boxes** (from the dataset annotations). |
-| `"both"` *(optional)* | Can show both predictions and GT for comparison. |
-
----
-
-### 🧮 3. Dataset Coverage
-- All **validation images** were available for visualization.  
-- The script iterates through the entire validation dataloader by default.  
-- For quick runs, you can limit frames:
-  ```bash
-  export VIZ_LIMIT=20
-  ```
-  This stops visualization after 20 samples — useful for testing setups.
-
----
-
-### 🎨 4. Class Colors
-Each detected class is drawn in its standard nuScenes-inspired color:
-| Class | Color | Purpose |
-|:-------|:------|:---------|
-| **Car** | Red | Common vehicle detection |
-| **Truck** | Orange | Heavy vehicle |
-| **Bus** | Yellow | Public transport |
-| **Pedestrian** | Green | Human subjects |
-| **Bicycle / Motorcycle** | Blue | Small 2-wheeled vehicles |
-| **Traffic Cone / Barrier** | Purple | Static obstacles |
-
-These colors remain consistent across both LiDAR BEV and camera visualizations, improving interpretability.
-
----
-
-## ✅ Summary of Improvements
-
-| Area | Before | After |
-|------|---------|-------|
-| Visualization backend | `test.py` (DDP) | `visualize_images.py` (Single GPU) |
-| Weight loading | HTTP download | Local pretrained Swin path |
-| Map/segmentation | Always rendered | Optional via `--no-map` |
-| Data handling | `DataContainer` errors | Explicit GPU scatter |
-| Image saving | Manual setup | Auto output folders |
-| Class colors | Default palette | Fixed nuScenes-like color map |
-
----
-
-**Author:** Prabuddhi N. Wariyapperuma  
-**Purpose:** Efficient single-GPU BEVFusion visualization (camera + LiDAR detections only) for analysis and qualitative evaluation.
 
 
