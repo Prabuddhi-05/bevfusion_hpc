@@ -315,7 +315,7 @@ A **SLURM batch script** to run visualization inside the Enroot container.
 - Ensures `tqdm` is installed.
 - Executes:
   ```bash
-  python tools/visualize_images.py       configs/.../default_viz.yaml       --mode pred       --checkpoint runs/run-xxxx/epoch_6.pth       --out-dir runs/run-xxxx/viz_results       --no-map --bbox-score 0.3
+  python tools/visualize.py       configs/.../default.yaml       --mode pred       --checkpoint runs/run-xxxx/epoch_6.pth       --out-dir runs/run-xxxx/viz_results       --no-map --bbox-score 0.3
   ```
 - Logs progress and saves visuals under `viz_results/`.
 
