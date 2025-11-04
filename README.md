@@ -293,7 +293,7 @@ A **single-GPU visualization script** that generates 3D boxes from BEVFusion out
     ├── camera-1/
     ...
   ```
-  - Each object class is drawn with a fixed color. 
+- Each object class is drawn with a fixed color. 
 ---
 
 ### 2. `default.yaml`
