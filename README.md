@@ -272,8 +272,6 @@ This visualizes **3D object detections** from trained BEVFusion models on both *
 
 ---
 
-## Files Overview
-
 ### 1. `visualize.py`
 A **single-GPU visualization script** that renders 3D boxes from BEVFusion outputs on LiDAR BEV and camera views.
 
