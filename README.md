@@ -281,6 +281,9 @@ A **single-GPU visualization script** that generates 3D boxes from BEVFusion out
   - `"pred"` → draw model predictions.  
   - `"gt"` → draw ground-truth boxes for comparison.
 - Uses `--bbox-score` to filter low-confidence detections.
+- Uses `--bbox-classes` to select class IDs.
+- Dataset control with `--split`:
+  - `train` or `val` → chooses which dataset split to visualize.
 - Uses `VIZ_LIMIT` (optional) to visualize only the first N validation samples.
 - Automatically saves outputs in per-camera folders:
   ```
