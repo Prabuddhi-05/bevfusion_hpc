@@ -268,7 +268,7 @@ srun --ntasks=1 --gpus=4 --gpu-bind=closest --mpi=none \
 
 # BEVFusion Visualization (Camera + LiDAR)
 
-This visualizes **3D object detections** from trained BEVFusion models on both **LiDAR BEV** and **camera images**, using a simplified, single-GPU setup.
+This visualizes **3D object detections** from trained BEVFusion models on both **LiDAR BEV** and **camera images**, using a single-GPU setup.
 
 ---
 
